@@ -64,37 +64,44 @@ export default function Registration() {
     }
   }, [error]);
 
-  const validate = (values) => {
+  const validate = (user) => {
     const errors = {};
-    if (!user.name) {
-      errors.name = "Name is required!";
-    }
-    if (!user.age) {
-      errors.age = "Age is required!";
-    } else if (parseInt(user.age) < 18 || parseInt(user.age) > 65) {
-      errors.age = "Age must be between 18 and 65 years!";
-    }
-    if (!user.gender) {
-      errors.gender = "Gender is required!";
-    }
-    if (!user.contact) {
-      errors.contact = "Contact is required!";
-    } else if (
-      parseInt(user.contact) < 1000000000 ||
-      parseInt(user.contact) > 9999999999 ||
-      user.contact < "1000000000" ||
-      user.contact > "9999999999"
-    ) {
-      errors.contact = "Contact must be equal to 10 digits!";
-    }
-    if (!user.fee) {
-      errors.fee = "Fees is required!";
-    } else if (parseInt(user.fee) !== 500) {
-      errors.fee = "Fees must be equal to 500!";
-    }
-    if (!user.slot) {
-      errors.slot = "Select a slot!";
-    }
+  
+    const validateField = (field, fieldName, additionalCheck) => {
+      if (!user[field]) {
+        errors[field] = `${fieldName} is required!`;
+      } else if (additionalCheck && !additionalCheck(user[field])) {
+        errors[field] = `${fieldName} is invalid!`;
+      }
+    };
+  
+    const validateAge = (age) => {
+      const parsedAge = parseInt(age);
+      return !isNaN(parsedAge) && parsedAge >= 18 && parsedAge <= 65;
+    };
+  
+    const validateContact = (contact) => {
+      const parsedContact = parseInt(contact);
+      return (
+        !isNaN(parsedContact) &&
+        contact.length === 10 &&
+        parsedContact >= 1000000000 &&
+        parsedContact <= 9999999999
+      );
+    };
+  
+    const validateFee = (fee) => {
+      const parsedFee = parseInt(fee);
+      return !isNaN(parsedFee) && parsedFee === 500;
+    };
+  
+    validateField('name', 'Name');
+    validateField('age', 'Age', validateAge);
+    validateField('gender', 'Gender');
+    validateField('contact', 'Contact', validateContact);
+    validateField('fee', 'Fees', validateFee);
+    validateField('slot', 'Select a slot');
+  
     return errors;
   };
   
