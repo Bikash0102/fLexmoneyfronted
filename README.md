@@ -1,6 +1,6 @@
 ### link to GitHub backend repo
 
-This project backend repo [Backedn](https://github.com/Bikash0102/fLexmoneybackend).
+This project backend repo [Backend](https://github.com/Bikash0102/fLexmoneybackend).
 
 ## Available Scripts
 
